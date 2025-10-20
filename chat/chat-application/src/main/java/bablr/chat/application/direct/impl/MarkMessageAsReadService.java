@@ -11,7 +11,7 @@ import bablr.chat.domain.value.MessageId;
 import java.time.Instant;
 import java.util.Objects;
 
-public class MarkMessageAsReadService implements MarkMessageAsReadUseCase {
+public final class MarkMessageAsReadService implements MarkMessageAsReadUseCase {
     private final DirectChatRepository repository;
     private final DomainEventPublisher publisher;
 

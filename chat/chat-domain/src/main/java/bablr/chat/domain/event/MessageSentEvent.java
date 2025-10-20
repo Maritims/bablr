@@ -7,10 +7,15 @@ import bablr.chat.domain.value.Message;
 import java.time.Instant;
 import java.util.Objects;
 
-public record MessageSentEvent(DirectChatId directChatId, Message message, Instant occurredAt) implements DomainEvent {
+public record MessageSentEvent(DirectChatId directChatId, Message message, Instant occurredAt, String type) implements DomainEvent {
+    public MessageSentEvent {
+        Objects.requireNonNull(directChatId);
+        Objects.requireNonNull(message);
+        Objects.requireNonNull(occurredAt);
+        Objects.requireNonNull(type);
+    }
+
     public MessageSentEvent(DirectChatId directChatId, Message message, Instant occurredAt) {
-        this.directChatId = Objects.requireNonNull(directChatId);
-        this.message      = Objects.requireNonNull(message);
-        this.occurredAt   = Objects.requireNonNull(occurredAt);
+        this(directChatId, message, occurredAt, "MessageSentEvent");
     }
 }

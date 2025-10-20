@@ -7,10 +7,14 @@ import bablr.chat.domain.value.MessageId;
 import java.time.Instant;
 import java.util.Objects;
 
-public record MessageReadEvent(DirectChatId directChatId, MessageId messageId, Instant occurredAt) implements DomainEvent {
+public record MessageReadEvent(DirectChatId directChatId, MessageId messageId, Instant occurredAt, String type) implements DomainEvent {
+    public MessageReadEvent {
+        Objects.requireNonNull(directChatId);
+        Objects.requireNonNull(messageId);
+        Objects.requireNonNull(occurredAt);
+    }
+
     public MessageReadEvent(DirectChatId directChatId, MessageId messageId, Instant occurredAt) {
-        this.directChatId = Objects.requireNonNull(directChatId);
-        this.messageId    = Objects.requireNonNull(messageId);
-        this.occurredAt   = Objects.requireNonNull(occurredAt);
+        this(directChatId, messageId, occurredAt, "MessageReadEvent");
     }
 }
