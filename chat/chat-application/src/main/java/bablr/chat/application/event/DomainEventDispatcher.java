@@ -1,6 +1,6 @@
 package bablr.chat.application.event;
 
-import bablr.chat.common.DomainEvent;
+import bablr.chat.domain.event.DomainEvent;
 
 import java.util.HashMap;
 import java.util.Map;

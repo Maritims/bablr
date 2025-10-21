@@ -1,9 +1,10 @@
 package bablr.chat.infrastructure.kafka;
 
 import bablr.chat.application.event.DomainEventDispatcher;
-import bablr.chat.common.DomainEvent;
+import bablr.chat.domain.event.DomainEvent;
 import bablr.chat.domain.event.MessageReadEvent;
 import bablr.chat.domain.event.MessageSentEvent;
+import bablr.chat.infrastructure.DomainEventDeserializer;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
 import java.time.Duration;
@@ -26,7 +27,7 @@ public final class KafkaDomainEventConsumer {
 
         var props = new Properties();
         props.put("bootstrap.servers", Objects.requireNonNull(bootstrapServers));
-        props.put("group.id", Objects.requireNonNull(groupId));
+        props.put("group.value", Objects.requireNonNull(groupId));
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 

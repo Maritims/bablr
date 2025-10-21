@@ -1,4 +1,4 @@
-package bablr.chat.common;
+package bablr.chat.domain.event;
 
 import java.time.Instant;
 

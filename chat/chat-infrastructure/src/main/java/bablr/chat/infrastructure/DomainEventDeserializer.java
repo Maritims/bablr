@@ -1,6 +1,6 @@
-package bablr.chat.infrastructure.kafka;
+package bablr.chat.infrastructure;
 
-import bablr.chat.common.DomainEvent;
+import bablr.chat.domain.event.DomainEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

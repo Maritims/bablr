@@ -16,7 +16,7 @@ public final class KafkaChatConsumer {
     public KafkaChatConsumer(String bootstrapServers, String topic, String groupId) {
         var props = new Properties();
         props.put("bootstrap.servers", Objects.requireNonNull(bootstrapServers));
-        props.put("group.id", Objects.requireNonNull(groupId));
+        props.put("group.value", Objects.requireNonNull(groupId));
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         consumer = new KafkaConsumer<>(props);

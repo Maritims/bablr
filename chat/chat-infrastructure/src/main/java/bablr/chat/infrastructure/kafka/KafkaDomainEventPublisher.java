@@ -1,7 +1,7 @@
 package bablr.chat.infrastructure.kafka;
 
 import bablr.chat.application.event.DomainEventPublisher;
-import bablr.chat.common.DomainEvent;
+import bablr.chat.domain.event.DomainEvent;
 import bablr.chat.domain.event.MessageSentEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -16,7 +16,20 @@ public final class KafkaDomainEventPublisher implements DomainEventPublisher {
     private final String                        topic;
 
     public KafkaDomainEventPublisher(String bootstrapServers, String topic) {
-        this.topic = Objects.requireNonNull(topic);
+        if (bootstrapServers == null) {
+            throw new IllegalArgumentException("bootstrapServers must not be null");
+        }
+        if (bootstrapServers.isBlank()) {
+            throw new IllegalArgumentException("bootstrapServers must not be blank");
+        }
+        if (topic == null) {
+            throw new IllegalArgumentException("topic must not be null");
+        }
+        if (topic.isBlank()) {
+            throw new IllegalArgumentException("topic must not be blank");
+        }
+
+        this.topic = topic;
 
         var props = new Properties();
         props.put("bootstrap.servers", Objects.requireNonNull(bootstrapServers));
@@ -34,7 +47,7 @@ public final class KafkaDomainEventPublisher implements DomainEventPublisher {
         try {
             String key = null;
             if(event instanceof MessageSentEvent mse) {
-                key = mse.directChatId().toString();
+                key = mse.chatId().toString();
             }
             var value = objectMapper.writeValueAsString(event);
             producer.send(new ProducerRecord<>(topic, key, value));
