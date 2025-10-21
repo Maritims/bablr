@@ -1,22 +1,29 @@
 package bablr.chat.infrastructure.persistence.sqlite;
 
+import bablr.chat.common.Discoverable;
 import bablr.chat.common.Initializable;
 import bablr.chat.domain.repository.MessageRepository;
 import bablr.chat.domain.value.ChatId;
 import bablr.chat.domain.entity.Message;
 import bablr.chat.domain.value.MessageId;
 import bablr.chat.domain.value.ParticipantId;
+import bablr.chat.infrastructure.config.BablrConfig;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Discoverable
 public class MessageRepositorySqliteImpl extends BaseRepositorySqliteImpl implements MessageRepository,
                                                                                      Initializable {
     public MessageRepositorySqliteImpl(String connectionString, int queryTimeout) {
         super(connectionString, queryTimeout);
     }
+
+    /*public MessageRepositorySqliteImpl() {
+        this(BablrConfig.get("sqlite.connectionString"), BablrConfig.getInt("sqlite.queryTimeout"));
+    }*/
 
     @Override
     public void initialize() {

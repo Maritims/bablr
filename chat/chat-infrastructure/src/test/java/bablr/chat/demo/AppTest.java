@@ -3,9 +3,11 @@ package bablr.chat.demo;
 import bablr.chat.application.event.DomainEventPublisher;
 import bablr.chat.application.impl.SendMessageService;
 import bablr.chat.application.impl.StartChatService;
+import bablr.chat.common.Discoverable;
 import bablr.chat.domain.entity.Participant;
 import bablr.chat.domain.event.MessageSentEvent;
 import bablr.chat.domain.value.ParticipantId;
+import bablr.chat.infrastructure.discovery.Discoverer;
 import bablr.chat.infrastructure.persistence.sqlite.ChatRepositorySqliteImpl;
 import bablr.chat.infrastructure.persistence.sqlite.MessageRepositorySqliteImpl;
 import org.junit.jupiter.api.Test;
@@ -23,6 +25,9 @@ public class AppTest {
     public void testApp() {
         var chatRepository    = new ChatRepositorySqliteImpl("jdbc:sqlite:foo.db", 10);
         var messageRepository = new MessageRepositorySqliteImpl("jdbc:sqlite:foo.db", 10);
+
+        Discoverer.discover("bablr.chat");
+
         var startChatService  = new StartChatService(chatRepository);
         var publisher         = mock(DomainEventPublisher.class);
         doAnswer(invocationOnMock -> {
@@ -38,9 +43,6 @@ public class AppTest {
             return invocationOnMock;
         }).when(publisher).publish(any(MessageSentEvent.class));
         var sendMessageService = new SendMessageService(chatRepository, messageRepository, publisher);
-
-        chatRepository.initialize();
-        messageRepository.initialize();
 
         var participantA = new Participant(ParticipantId.newParticipantId());
         var participantB = new Participant(ParticipantId.newParticipantId());
