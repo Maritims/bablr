@@ -7,7 +7,6 @@ import bablr.chat.domain.entity.Participant;
 import bablr.chat.domain.repository.ChatRepository;
 import bablr.chat.domain.value.ChatId;
 import bablr.chat.domain.value.ParticipantId;
-import bablr.chat.infrastructure.config.BablrConfig;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -19,14 +18,6 @@ import java.util.UUID;
 @Discoverable
 public class ChatRepositorySqliteImpl extends BaseRepositorySqliteImpl implements Initializable,
                                                                                   ChatRepository {
-    public ChatRepositorySqliteImpl(String connectionString, int queryTimeout) {
-        super(connectionString, queryTimeout);
-    }
-
-    public ChatRepositorySqliteImpl() {
-        this(BablrConfig.get("sqlite.connectionString"), BablrConfig.getInt("sqlite.queryTimeout"));
-    }
-
     @Override
     public void initialize() {
         try (var connection = connection(); var statement = connection.createStatement()) {

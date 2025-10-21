@@ -1,16 +1,14 @@
 package bablr.chat.infrastructure.persistence.sqlite;
 
+import bablr.chat.common.Discoverable;
 import bablr.chat.common.Initializable;
 import bablr.chat.domain.repository.ParticipantRepository;
 
 import java.sql.SQLException;
 
+@Discoverable
 public class ParticipantRepositorySqliteImpl extends BaseRepositorySqliteImpl implements Initializable,
                                                                                          ParticipantRepository {
-    public ParticipantRepositorySqliteImpl(String connectionString, int queryTimeout) {
-        super(connectionString, queryTimeout);
-    }
-
     @Override
     public void initialize() {
         try (var connection = connection(); var statement = connection.createStatement()) {

@@ -1,5 +1,7 @@
 package bablr.chat.infrastructure.persistence.sqlite;
 
+import bablr.chat.infrastructure.config.BablrConfig;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -16,6 +18,10 @@ public class BaseRepositorySqliteImpl {
         }
 
         this.connectionString = connectionString;
+    }
+
+    public BaseRepositorySqliteImpl() {
+        this(BablrConfig.get("sqlite.connectionString"), BablrConfig.getInt("sqlite.queryTimeout"));
     }
 
     protected Connection connection() throws SQLException {

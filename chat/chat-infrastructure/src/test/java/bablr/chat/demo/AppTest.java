@@ -23,8 +23,8 @@ import static org.mockito.Mockito.*;
 public class AppTest {
     @Test
     public void testApp() {
-        var chatRepository    = new ChatRepositorySqliteImpl("jdbc:sqlite:foo.db", 10);
-        var messageRepository = new MessageRepositorySqliteImpl("jdbc:sqlite:foo.db", 10);
+        var chatRepository    = new ChatRepositorySqliteImpl();
+        var messageRepository = new MessageRepositorySqliteImpl();
 
         Discoverer.discover("bablr.chat");
 
