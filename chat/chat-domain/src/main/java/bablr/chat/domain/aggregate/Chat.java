@@ -70,7 +70,7 @@ public class Chat {
     }
 
     public List<DomainEvent> getEvents() {
-        return events;
+        return Collections.unmodifiableList(events);
     }
 
     public void clearEvents() {
