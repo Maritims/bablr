@@ -1,7 +1,6 @@
 package bablr.chat.infrastructure.persistence.sqlite;
 
 import bablr.chat.common.Initializable;
-import bablr.chat.domain.entity.Participant;
 import bablr.chat.domain.repository.MessageRepository;
 import bablr.chat.domain.value.ChatId;
 import bablr.chat.domain.entity.Message;
@@ -55,10 +54,10 @@ public class MessageRepositorySqliteImpl extends BaseRepositorySqliteImpl implem
             var messages  = new ArrayList<Message>();
             while (resultSet.next()) {
                 var messageId = UUID.fromString(resultSet.getString("message_id"));
-                var sender    = UUID.fromString(resultSet.getString("sender"));
+                var senderId  = UUID.fromString(resultSet.getString("senderId"));
                 var content   = resultSet.getString("content");
                 var timestamp = resultSet.getTimestamp("timestamp").toInstant();
-                var message   = new Message(new MessageId(messageId), new Participant(new ParticipantId(sender)), content, timestamp);
+                var message   = new Message(new MessageId(messageId), chatId, new ParticipantId(senderId), content, timestamp);
                 messages.add(message);
             }
 
@@ -72,6 +71,18 @@ public class MessageRepositorySqliteImpl extends BaseRepositorySqliteImpl implem
     public void save(Message message) {
         if (message == null) {
             throw new IllegalArgumentException("message must not be null");
+        }
+
+        var insertMessageSQL = "INSERT INTO message (message_id, chat_id, sender, content, timestamp) VALUES (?, ?, ?, ?, ?)";
+        try (var connection = connection(); var statement = connection.prepareStatement(insertMessageSQL)) {
+            statement.setString(1, MessageId.newMessageId().value().toString());
+            statement.setString(2, message.chatId().value().toString());
+            statement.setString(3, message.senderId().value().toString());
+            statement.setString(4, message.content());
+            statement.setTimestamp(5, java.sql.Timestamp.from(message.timestamp()));
+            statement.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

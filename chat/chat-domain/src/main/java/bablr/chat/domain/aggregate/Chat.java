@@ -6,6 +6,7 @@ import bablr.chat.domain.event.MessageSentEvent;
 import bablr.chat.domain.value.ChatId;
 import bablr.chat.domain.entity.Message;
 import bablr.chat.domain.value.MessageId;
+import bablr.chat.domain.value.ParticipantId;
 
 import java.time.Instant;
 import java.util.*;
@@ -34,7 +35,7 @@ public class Chat {
 
     public static Chat existingChat(ChatId id, Set<Participant> participants) {
         if(id == null) {
-            throw new IllegalArgumentException("id must not be null");
+            throw new IllegalArgumentException("value must not be null");
         }
         if(participants == null) {
             throw new IllegalArgumentException("participants must not be null");
@@ -58,12 +59,12 @@ public class Chat {
         return id == null;
     }
 
-    public Message sendMessage(Participant sender, String content) {
-        if(!participants.contains(sender)) {
+    public Message sendMessage(ParticipantId senderId, String content) {
+        if(participants.stream().noneMatch(p -> p.id().equals(senderId))) {
             throw new IllegalArgumentException("Sender is not part of this chat");
         }
 
-        var message = new Message(new MessageId(UUID.randomUUID()), sender, content, Instant.now());
+        var message = new Message(new MessageId(UUID.randomUUID()), id, senderId, content, Instant.now());
         events.add(new MessageSentEvent(id, message, Instant.now()));
         return message;
     }

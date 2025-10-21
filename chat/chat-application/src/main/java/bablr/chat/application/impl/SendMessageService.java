@@ -8,8 +8,6 @@ import bablr.chat.domain.repository.MessageRepository;
 import bablr.chat.domain.value.ChatId;
 import bablr.chat.domain.entity.Message;
 
-import java.util.Objects;
-
 @SuppressWarnings("ClassCanBeRecord")
 public final class SendMessageService implements SendMessageUseCase {
     private final ChatRepository       chatRepository;
@@ -45,7 +43,7 @@ public final class SendMessageService implements SendMessageUseCase {
         }
 
         var chat    = chatRepository.findById(chatId).orElseThrow(() -> new IllegalArgumentException("Chat not found"));
-        var message = chat.sendMessage(participant, content);
+        var message = chat.sendMessage(participant.id(), content);
         messageRepository.save(message);
 
         chat.getEvents().forEach(publisher::publish);

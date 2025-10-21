@@ -21,8 +21,8 @@ import static org.mockito.Mockito.*;
 public class AppTest {
     @Test
     public void testApp() {
-        var chatRepository    = new ChatRepositorySqliteImpl("jdbc:sqlite:chat.db", 10);
-        var messageRepository = new MessageRepositorySqliteImpl("jdbc:sqlite:chat.db", 10);
+        var chatRepository    = new ChatRepositorySqliteImpl("jdbc:sqlite:foo.db", 10);
+        var messageRepository = new MessageRepositorySqliteImpl("jdbc:sqlite:foo.db", 10);
         var startChatService  = new StartChatService(chatRepository);
         var publisher         = mock(DomainEventPublisher.class);
         doAnswer(invocationOnMock -> {
@@ -32,7 +32,7 @@ public class AppTest {
                     DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
                             .withZone(ZoneId.systemDefault())
                             .format(domainEvent.message().timestamp()),
-                    domainEvent.message().sender().id().value(),
+                    domainEvent.message().senderId().value(),
                     domainEvent.message().content()
             );
             return invocationOnMock;
