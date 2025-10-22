@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>bablr</groupId>
-    <artifactId>bablr</artifactId>
+    <artifactId>bablr-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -23,14 +23,20 @@
     </properties>
 
     <modules>
-        <module>chat/chat-domain</module>
-        <module>chat/chat-application</module>
-        <module>chat/chat-common</module>
-        <module>chat/chat-infrastructure</module>
+        <module>chat-domain</module>
+        <module>chat-application</module>
+        <module>chat-common</module>
+        <module>chat-infrastructure</module>
+        <module>chat-runner</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>2.0.17</version>
+            </dependency>
             <dependency>
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-clients</artifactId>

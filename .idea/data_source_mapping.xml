@@ -4,9 +4,9 @@
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/c2a562a7-0ff4-4751-ac52-1c556cefface/console.sql" value="c2a562a7-0ff4-4751-ac52-1c556cefface" />
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/ce64a0e3-e4a3-4c79-9fdf-768931305c6f/console.sql" value="ce64a0e3-e4a3-4c79-9fdf-768931305c6f" />
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/ed8c664d-86d6-4fa8-81a8-fde3f8a0cfb6/console.sql" value="ed8c664d-86d6-4fa8-81a8-fde3f8a0cfb6" />
-    <file url="file://$PROJECT_DIR$/chat/chat-infrastructure/src/main/java/bablr/chat/infrastructure/persistence/sqlite/ChatRepositorySqliteImpl.java" value="ed8c664d-86d6-4fa8-81a8-fde3f8a0cfb6" />
-    <file url="file://$PROJECT_DIR$/chat/chat-infrastructure/src/main/java/bablr/chat/infrastructure/persistence/sqlite/MessageRepositorySqliteImpl.java" value="ed8c664d-86d6-4fa8-81a8-fde3f8a0cfb6" />
-    <file url="file://$PROJECT_DIR$/chat/chat-infrastructure/src/main/java/bablr/chat/infrastructure/persistence/sqlite/ParticipantRepositorySqliteImpl.java" value="ed8c664d-86d6-4fa8-81a8-fde3f8a0cfb6" />
+    <file url="file://$PROJECT_DIR$/chat-infrastructure/src/main/java/bablr/chat/infrastructure/persistence/sqlite/ChatRepositorySqliteImpl.java" value="ed8c664d-86d6-4fa8-81a8-fde3f8a0cfb6" />
+    <file url="file://$PROJECT_DIR$/chat-infrastructure/src/main/java/bablr/chat/infrastructure/persistence/sqlite/MessageRepositorySqliteImpl.java" value="ed8c664d-86d6-4fa8-81a8-fde3f8a0cfb6" />
+    <file url="file://$PROJECT_DIR$/chat-infrastructure/src/main/java/bablr/chat/infrastructure/persistence/sqlite/ParticipantRepositorySqliteImpl.java" value="ed8c664d-86d6-4fa8-81a8-fde3f8a0cfb6" />
     <file url="das://c2a562a7-0ff4-4751-ac52-1c556cefface/schema/main/table/chat.sql" value="c2a562a7-0ff4-4751-ac52-1c556cefface" />
   </component>
 </project>
