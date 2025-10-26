@@ -1,6 +1,6 @@
 package bablr.chat.adapters.out.event.websocket;
 
-import bablr.chat.application.port.in.chat.Command;
+import bablr.chat.application.command.Command;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.websocket.EncodeException;

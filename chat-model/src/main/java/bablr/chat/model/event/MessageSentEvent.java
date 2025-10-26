@@ -5,5 +5,5 @@ import bablr.chat.model.chat.ParticipantId;
 
 import java.time.Instant;
 
-public record ChatCreated(ChatId chatId, ParticipantId creatorId, Instant occurredAt) implements DomainEvent {
+public record MessageSentEvent(ChatId chatId, ParticipantId senderId, String content, Instant occurredAt) implements DomainEvent {
 }

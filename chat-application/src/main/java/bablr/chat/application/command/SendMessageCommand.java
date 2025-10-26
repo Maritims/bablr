@@ -1,4 +1,4 @@
-package bablr.chat.application.port.in.chat;
+package bablr.chat.application.command;
 
 import bablr.chat.model.chat.ChatId;
 import bablr.chat.model.chat.ParticipantId;

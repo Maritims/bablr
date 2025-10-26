@@ -1,12 +1,12 @@
 package bablr.chat.application.service.chat;
 
 import bablr.chat.application.port.in.chat.SendMessage;
-import bablr.chat.application.port.in.chat.SendMessageCommand;
+import bablr.chat.application.command.SendMessageCommand;
 import bablr.chat.application.port.out.event.DomainEventDispatcher;
 import bablr.chat.application.port.out.persistence.ChatRepository;
 import bablr.chat.application.port.out.persistence.MessageRepository;
 import bablr.chat.model.chat.Message;
-import bablr.chat.model.event.MessageSent;
+import bablr.chat.model.event.MessageSentEvent;
 
 public class SendMessageService implements SendMessage {
     private final ChatRepository        chatRepository;
@@ -38,6 +38,6 @@ public class SendMessageService implements SendMessage {
         var chat    = chatRepository.findById(command.chatId()).orElseThrow(() -> new IllegalArgumentException("Chat not found: " + command.chatId()));
         var message = Message.newMessage(chat.getId(), command.senderId(), command.content());
         messageRepository.save(message);
-        domainEventDispatcher.dispatch(new MessageSent(chat.getId(), command.senderId(), command.content(), command.occurredAt()));
+        domainEventDispatcher.dispatch(new MessageSentEvent(chat.getId(), command.senderId(), command.content(), command.occurredAt()));
     }
 }

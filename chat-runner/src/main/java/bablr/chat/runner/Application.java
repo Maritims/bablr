@@ -1,19 +1,19 @@
 package bablr.chat.runner;
 
-import bablr.chat.adapters.out.event.inmemory.InMemoryListener;
-import bablr.chat.adapters.out.event.websocket.WebsocketServer;
+import bablr.chat.adapters.out.event.inmemory.InMemoryConnector;
 import bablr.chat.adapters.out.persistence.inmemory.InMemoryChatRepository;
 import bablr.chat.adapters.out.persistence.inmemory.InMemoryMessageRepository;
 import bablr.chat.adapters.out.persistence.sqlite.SqliteChatRepository;
 import bablr.chat.adapters.out.persistence.sqlite.SqliteMessageRepository;
-import bablr.chat.application.port.in.chat.*;
+import bablr.chat.application.command.CommandHandler;
+import bablr.chat.application.command.CreateChatCommand;
+import bablr.chat.application.command.SendMessageCommand;
 import bablr.chat.application.port.out.event.DomainEventDispatcher;
-import bablr.chat.application.port.out.event.DomainEventListener;
 import bablr.chat.application.port.out.persistence.ChatRepository;
 import bablr.chat.application.port.out.persistence.MessageRepository;
-import bablr.chat.application.service.chat.ChatFacade;
 import bablr.chat.application.service.chat.CreateChatService;
 import bablr.chat.application.service.chat.SendMessageService;
+import bablr.chat.common.tuples.Tuple;
 import bablr.chat.model.chat.ParticipantId;
 
 import java.time.Instant;
@@ -44,20 +44,18 @@ public class Application {
         var messageRepository     = inMemoryMessageRepository();
         var createChat            = new CreateChatService(chatRepository, domainEventDispatcher);
         var sendMessage           = new SendMessageService(chatRepository, messageRepository, domainEventDispatcher);
-        var commandHandler = new CommandHandler()
-                .register(CreateChatCommand.class, command -> createChat.createChat((CreateChatCommand) command))
-                .register(SendMessageCommand.class, command -> sendMessage.sendMessage((SendMessageCommand) command));
-        //var domainEventListener = new WebsocketServer().commandHandler(commandHandler);
-        var domainEventListener = (InMemoryListener) new InMemoryListener().commandHandler(commandHandler);
+        var commandHandler = new CommandHandler(
+                Tuple.of(CreateChatCommand.class, command -> createChat.process((CreateChatCommand) command)),
+                Tuple.of(SendMessageCommand.class, command -> sendMessage.sendMessage((SendMessageCommand) command))
+        );
 
-        var chatFacade = new ChatFacade(domainEventListener)
-                .registerListeners(domainEventDispatcher)
-                .start();
+        //var connector = new WebsocketServer().commandHandler(commandHandler);
+        var connectorAndEventHandler = new InMemoryConnector(commandHandler);
 
         var participantId = ParticipantId.newParticipantId();
-        domainEventListener.acceptConnection(participantId.value());
+        connectorAndEventHandler.onClientConnected(participantId.value());
 
-        var chat = createChat.createChat(new CreateChatCommand("Foo Bar", participantId, Instant.now()));
+        var chat = createChat.process(new CreateChatCommand("Foo Bar", participantId, Instant.now()));
         sendMessage.sendMessage(new SendMessageCommand(chat.getId(), participantId, "Hello, World!", Instant.now()));
     }
 }

@@ -1,4 +1,4 @@
-package bablr.chat.application.port.in.chat;
+package bablr.chat.application.command;
 
 public interface Command {
     String type();
