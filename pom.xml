@@ -23,19 +23,20 @@
     </properties>
 
     <modules>
-        <module>chat-domain</module>
         <module>chat-application</module>
         <module>chat-common</module>
         <module>chat-infrastructure</module>
         <module>chat-runner</module>
+        <module>chat-adapters</module>
+        <module>chat-model</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-simple</artifactId>
-                <version>2.0.17</version>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.5.18</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.kafka</groupId>
