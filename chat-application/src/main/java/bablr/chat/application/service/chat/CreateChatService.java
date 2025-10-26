@@ -2,7 +2,7 @@ package bablr.chat.application.service.chat;
 
 import bablr.chat.application.command.CommandProcessor;
 import bablr.chat.application.port.in.chat.CreateChat;
-import bablr.chat.application.command.CreateChatCommand;
+import bablr.chat.application.command.CreateChatDomainCommand;
 import bablr.chat.application.port.out.event.DomainEventDispatcher;
 import bablr.chat.application.port.out.persistence.ChatRepository;
 import bablr.chat.model.chat.Chat;
@@ -26,7 +26,7 @@ public class CreateChatService implements CreateChat {
     }
 
     @Override
-    public Chat process(CreateChatCommand command) {
+    public Chat createChat(CreateChatDomainCommand command) {
         if (command == null) {
             throw new IllegalArgumentException("command must not be null");
         }

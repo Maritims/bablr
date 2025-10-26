@@ -1,7 +1,7 @@
 package bablr.chat.application.service.chat;
 
 import bablr.chat.application.port.in.chat.SendMessage;
-import bablr.chat.application.command.SendMessageCommand;
+import bablr.chat.application.command.SendMessageDomainCommand;
 import bablr.chat.application.port.out.event.DomainEventDispatcher;
 import bablr.chat.application.port.out.persistence.ChatRepository;
 import bablr.chat.application.port.out.persistence.MessageRepository;
@@ -30,7 +30,7 @@ public class SendMessageService implements SendMessage {
     }
 
     @Override
-    public void sendMessage(SendMessageCommand command) {
+    public void sendMessage(SendMessageDomainCommand command) {
         if (command == null) {
             throw new IllegalArgumentException("command must not be null");
         }

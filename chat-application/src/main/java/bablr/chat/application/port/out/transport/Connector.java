@@ -1,9 +1,14 @@
 package bablr.chat.application.port.out.transport;
 
-import bablr.chat.application.command.Command;
+import bablr.chat.application.command.DomainCommand;
+import bablr.chat.model.chat.ChatId;
 import bablr.chat.model.event.DomainEvent;
 
+import java.util.Set;
+
 public interface Connector<TConnectionIdHolder, TConnectionId> {
+    Set<ChatId> getChatIds();
+
     void listen();
 
     void shutdown();
@@ -14,7 +19,7 @@ public interface Connector<TConnectionIdHolder, TConnectionId> {
 
     void onClientDisconnected(TConnectionIdHolder connection);
 
-    void onCommandReceived(Command command);
+    void onCommandReceived(DomainCommand domainCommand);
 
     void send(TConnectionIdHolder connectionIdHolder, DomainEvent domainEvent);
 

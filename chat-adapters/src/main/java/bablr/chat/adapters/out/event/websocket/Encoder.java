@@ -1,19 +1,19 @@
 package bablr.chat.adapters.out.event.websocket;
 
-import bablr.chat.application.command.Command;
+import bablr.chat.application.command.DomainCommand;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.websocket.EncodeException;
 
-public class Encoder implements jakarta.websocket.Encoder.Text<Command> {
+public class Encoder implements jakarta.websocket.Encoder.Text<DomainCommand> {
     private static ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public String encode(Command command) throws EncodeException {
+    public String encode(DomainCommand domainCommand) throws EncodeException {
         try {
-            return objectMapper.writeValueAsString(command);
+            return objectMapper.writeValueAsString(domainCommand);
         } catch (JsonProcessingException e) {
-            throw new EncodeException(command, "Failed to encode command", e);
+            throw new EncodeException(domainCommand, "Failed to encode command", e);
         }
     }
 

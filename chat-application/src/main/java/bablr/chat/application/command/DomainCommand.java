@@ -1,5 +1,5 @@
 package bablr.chat.application.command;
 
-public interface Command {
+public interface DomainCommand {
     String type();
 }

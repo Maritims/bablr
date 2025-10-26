@@ -1,7 +1,7 @@
 package bablr.chat.application.port.in.chat;
 
-import bablr.chat.application.command.SendMessageCommand;
+import bablr.chat.application.command.SendMessageDomainCommand;
 
 public interface SendMessage {
-    void sendMessage(SendMessageCommand command);
+    void sendMessage(SendMessageDomainCommand command);
 }

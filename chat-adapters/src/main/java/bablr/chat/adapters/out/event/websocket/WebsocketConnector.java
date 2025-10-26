@@ -1,7 +1,7 @@
 package bablr.chat.adapters.out.event.websocket;
 
-import bablr.chat.application.command.Command;
-import bablr.chat.application.command.CommandHandler;
+import bablr.chat.application.command.DomainCommand;
+import bablr.chat.application.command.DomainCommandHandler;
 import bablr.chat.application.port.out.event.DomainEventHandler;
 import bablr.chat.application.port.out.transport.ConnectionId;
 import bablr.chat.application.port.out.transport.Connector;
@@ -15,32 +15,41 @@ import jakarta.websocket.server.ServerEndpoint;
 import org.eclipse.jetty.ee11.servlet.ServletContextHandler;
 import org.eclipse.jetty.ee11.websocket.jakarta.server.config.JakartaWebSocketServletContainerInitializer;
 import org.eclipse.jetty.server.Server;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 @ServerEndpoint(value = "/chat", encoders = Encoder.class, decoders = Decoder.class)
-public class WebsocketConnector implements Connector<Session, String>, DomainEventHandler {
+public class WebsocketConnector implements Connector<Session, String>,
+                                           DomainEventHandler {
+    private static final Logger                                        log         = LoggerFactory.getLogger(WebsocketConnector.class);
     private static final Map<ConnectionId<String>, WebsocketConnector> connections = new HashMap<>();
 
-    private final CommandHandler commandHandler;
+    private final short                port;
+    private final DomainCommandHandler domainCommandHandler;
 
     private Server      server;
     private Session     session;
     private Set<ChatId> chats;
 
-    public WebsocketConnector(CommandHandler commandHandler) {
-        if (commandHandler == null) {
+    public WebsocketConnector(short port, DomainCommandHandler domainCommandHandler) {
+        if (port < 0) {
+            throw new IllegalArgumentException("port must not be negative");
+        }
+        if (domainCommandHandler == null) {
             throw new IllegalArgumentException("commandHandler must not be null");
         }
 
-        this.commandHandler = commandHandler;
+        this.port = port;
+        this.domainCommandHandler = domainCommandHandler;
     }
 
     @Override
     public void listen() {
-        server = new Server(8080);
+        server = new Server(port);
         var context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         server.setHandler(context);
@@ -58,6 +67,8 @@ public class WebsocketConnector implements Connector<Session, String>, DomainEve
         } catch (InterruptedException e) {
             throw new RuntimeException("Failed to join server", e);
         }
+
+        log.info("Server started on port {}", port);
     }
 
     @Override
@@ -90,12 +101,12 @@ public class WebsocketConnector implements Connector<Session, String>, DomainEve
 
     @OnMessage
     @Override
-    public void onCommandReceived(Command command) {
-        if (command == null) {
+    public void onCommandReceived(DomainCommand domainCommand) {
+        if (domainCommand == null) {
             throw new IllegalArgumentException("message must not be null");
         }
 
-        commandHandler.handle(command);
+        domainCommandHandler.handle(domainCommand);
     }
 
     @Override
@@ -107,16 +118,17 @@ public class WebsocketConnector implements Connector<Session, String>, DomainEve
             throw new IllegalArgumentException("command must not be null");
         }
 
-        var connection = connections.get(parseConnectionId(connectionIdHolder));
-        if (connection == null) {
+        var connector = connections.get(parseConnectionId(connectionIdHolder));
+        if (connector == null) {
             throw new IllegalArgumentException("connectionIdHolder must be a valid connection");
         }
 
-        connection.chats
+        connector.chats
                 .stream()
                 .filter(chatId -> chatId.equals(domainEvent.chatId()))
                 .findFirst()
-                .ifPresent(chatId -> connection.session.getAsyncRemote().sendObject(domainEvent, result -> {}));
+                .ifPresent(chatId -> connector.session.getAsyncRemote().sendObject(domainEvent, result -> {
+                }));
     }
 
     @Override

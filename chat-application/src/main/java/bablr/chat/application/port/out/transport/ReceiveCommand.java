@@ -1,7 +1,7 @@
 package bablr.chat.application.port.out.transport;
 
-import bablr.chat.application.command.Command;
+import bablr.chat.application.command.DomainCommand;
 
 public interface ReceiveCommand {
-    Command receive(String payload);
+    DomainCommand receive(String payload);
 }

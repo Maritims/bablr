@@ -5,7 +5,7 @@ import bablr.chat.model.chat.ParticipantId;
 
 import java.time.Instant;
 
-public record SendMessageCommand(ChatId chatId, ParticipantId senderId, String content, Instant occurredAt) implements Command {
+public record SendMessageDomainCommand(ChatId chatId, ParticipantId senderId, String content, Instant occurredAt) implements DomainCommand {
     @Override
     public String type() {
         return "SendMessage";

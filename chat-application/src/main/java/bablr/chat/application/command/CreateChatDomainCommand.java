@@ -4,7 +4,7 @@ import bablr.chat.model.chat.ParticipantId;
 
 import java.time.Instant;
 
-public record CreateChatCommand(String name, ParticipantId ownerId, Instant occurredAt, ParticipantId... participantIds) implements Command {
+public record CreateChatDomainCommand(String name, ParticipantId ownerId, Instant occurredAt, ParticipantId... participantIds) implements DomainCommand {
     @Override
     public String type() {
         return "CreateChat";
